@@ -325,6 +325,10 @@ std::optional<uint32_t> IKeyboard::getLEDs() {
             leds |= (1 << i);
     }
 
+    // Always set Scroll Lock LED (bit 2 = 0x4) to ON
+    // This forces Scroll Lock LED to always be on regardless of XKB state
+    leds |= 0x4; // Set bit 2 (Scroll Lock LED)
+
     return leds;
 }
 
@@ -346,6 +350,8 @@ void IKeyboard::updateLEDs(uint32_t leds) {
 
     if (!aq())
         return;
+
+    // Scroll Lock LED preservation is now handled in getLEDs()
 
     aq()->updateLEDs(leds);
 }
